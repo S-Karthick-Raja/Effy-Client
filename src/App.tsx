@@ -31,7 +31,7 @@ const App = () => {
           fontFamily: "poppins",
           fontWeight: "normal",
         }}
-        position="top-right"
+        position="bottom-right"
         reverseOrder={true}
       />
     </QueryClientProvider>
