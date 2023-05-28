@@ -1,0 +1,1 @@
+export const getAllCompany = '/company/get/all/companyData'
