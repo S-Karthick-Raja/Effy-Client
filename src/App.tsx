@@ -5,10 +5,14 @@ import DashboardPage from "./pages/dashboard";
 import CompaniesPage from "./pages/companies";
 import UsersPage from "./pages/users";
 import DeactivatedUserPage from "./pages/deactivated";
+import { Toaster } from "react-hot-toast";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const App = () => {
+  const queryClient = new QueryClient();
+
   return (
-    <div className="">
+    <QueryClientProvider client={queryClient}>
       <Router>
         <Routes>
           <Route path="/" element={<HomeLayout />}>
@@ -20,7 +24,17 @@ const App = () => {
           </Route>
         </Routes>
       </Router>
-    </div>
+      <Toaster
+        containerStyle={{
+          zIndex: 99999,
+          fontSize: "14px",
+          fontFamily: "poppins",
+          fontWeight: "normal",
+        }}
+        position="top-right"
+        reverseOrder={true}
+      />
+    </QueryClientProvider>
   );
 };
 

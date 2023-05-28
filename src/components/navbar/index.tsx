@@ -85,13 +85,13 @@ const Navbar: React.FC = (): React.ReactElement => {
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke-width="1.5"
+                      strokeWidth="2"
                       stroke="currentColor"
                       className="-ml-0.5 h-5 w-5"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                       strokeLinejoin="round"
+                       strokeWidth="2"
                         d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z"
                       />
                     </svg>
@@ -105,13 +105,13 @@ const Navbar: React.FC = (): React.ReactElement => {
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke-width="1.5"
+                      strokeWidth="2"
                       stroke="currentColor"
                       className="-ml-0.5 h-5 w-5"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
                         d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z"
                       />
                     </svg>
