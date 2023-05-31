@@ -7,6 +7,8 @@ import UsersPage from "./pages/users";
 import DeactivatedUserPage from "./pages/deactivated";
 import { Toaster } from "react-hot-toast";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import UniqueCompany from "./pages/uniqueCompany";
+import CompanyAddress from "./pages/companyAddress";
 
 const App = () => {
   const queryClient = new QueryClient();
@@ -19,6 +21,8 @@ const App = () => {
             <Route path="" element={<HomePage />} />
             <Route path="dashboard" element={<DashboardPage />} />
             <Route path="companies" element={<CompaniesPage />} />
+            <Route path="company/:id" element={<UniqueCompany />} />
+            <Route path="company/address/:id" element={<CompanyAddress />} />
             <Route path="users" element={<UsersPage />} />
             <Route path="deactivated/users" element={<DeactivatedUserPage />} />
           </Route>
