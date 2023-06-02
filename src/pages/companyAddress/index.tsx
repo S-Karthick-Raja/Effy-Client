@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
 import Map from "../../components/map";
 import { useGetUniqueCompanyMutation } from "../../hooks/get/getUniqueCompany";
@@ -12,10 +13,10 @@ const CompanyAddress: React.FC = (): React.ReactElement => {
     getUniqueCompanyMutation.mutate();
   }, []);
 
-  const latitude = parseInt(company?.latitude);
-  const longitude = parseInt(company?.longitude);
-
-  console.log(company);
+  const center = {
+    lat: parseFloat(company?.latitude),
+    lng: parseFloat(company?.longitude),
+  };
 
   return (
     <div className="w-full p-4 rounded-sm flex flex-col gap-4 bg-white min-h-screen ">
@@ -39,7 +40,7 @@ const CompanyAddress: React.FC = (): React.ReactElement => {
         Location for [{company?.companyName}]
       </h1>
       <div className="px-4 w-full min-h-screen">
-        <Map latitude={latitude} longitude={longitude} />
+        <Map latitude={center.lat} longitude={center.lng} />
       </div>
     </div>
   );
