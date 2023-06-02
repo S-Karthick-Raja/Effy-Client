@@ -5,20 +5,20 @@ import { useAtom } from 'jotai';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { LoadingState } from '../../jotai/companies';
-import {  getUniqueCompany } from '../../config/url';
+import { getUniqueUser } from '../../config/url';
 import { useParams } from 'react-router-dom';
 
-export const useGetUniqueCompanyMutation = (): any => {
+export const useGetUniqueUserMutation = (): any => {
 
     const [loading, setLoading] = useAtom(LoadingState);
-    const [company, setCompany] = useState([]);
+    const [user, setUser] = useState([]);
 
     const params = useParams()
 
-    const getUniqueCompanyMutation = useMutation(
+    const getUniqueUserMutation = useMutation(
         async () => {
             setLoading(true);
-            return await backend({ url: `${getUniqueCompany}/${params.id}`, method: 'GET' });
+            return await backend({ url: `${getUniqueUser}/${params.id}`, method: 'GET' });
         },
         {
             onError: (error: any) => {
@@ -27,12 +27,12 @@ export const useGetUniqueCompanyMutation = (): any => {
             },
             onSuccess: (response: any) => {
                 toast.success(response.data.message)
-                setCompany(
+                setUser(
                     response.data.data
                 );
                 setLoading(false);
             },
         }
     );
-    return { getUniqueCompanyMutation, company, loading };
+    return { getUniqueUserMutation, user, loading };
 };

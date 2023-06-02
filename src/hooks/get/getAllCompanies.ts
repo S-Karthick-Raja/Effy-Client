@@ -12,8 +12,6 @@
 
         const location = useLocation();
 
-        console.log(location.pathname)
-
         const [loading, setLoading] = useAtom(LoadingState);
         const [company, setCompany] = useState([]);
 
@@ -24,11 +22,24 @@
             },
             {
                 onError: (error: any) => {
-                    toast.error(error.response.data.error.message);
+
+                    if (error.response.data.error === 'No company found') {
+                    toast(error.response.data.error)
+                        
+                    }else {
+                    toast.error(error.response.data.error)
+
+                    }
                     setLoading(false);
                 },
                 onSuccess: (response: any) => {
                 {location.pathname === '/companies' && toast.success(response.data.message) }
+
+                // setCompany(response.data.data.map((value: any) => ({
+                //     value: value.title,
+                //     label: value.title,
+                //     id: value.id,
+                // })));
                     setCompany(
                         response.data.data
                     );

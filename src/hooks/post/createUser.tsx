@@ -2,15 +2,15 @@
 import { useMutation } from "@tanstack/react-query";
 import { backend } from "../../utils/axiosInstants";
 import toast from "react-hot-toast";
-import { addCompany } from "../../config/url";
+import { addUser } from "../../config/url";
 import { useNavigate } from "react-router-dom";
 
-export const useCreateCompanyMutation = (): any => {
+export const useCreateUserMutation = (): any => {
   const navigate = useNavigate();
-  const createCompanyMutation = useMutation(
+  const createUserMutation = useMutation(
     async (RequestData: any) => {
       return await backend({
-        url: `${addCompany}`,
+        url: `${addUser}`,
         method: "POST",
         data: RequestData,
       });
@@ -20,10 +20,10 @@ export const useCreateCompanyMutation = (): any => {
         toast.error(errors.response.data.error);
       },
       onSuccess: () => {
-        toast.success("Created company successfully");
+        toast.success("Created user successfully");
         navigate(0);
       },
     }
   );
-  return { createCompanyMutation };
+  return { createUserMutation };
 };

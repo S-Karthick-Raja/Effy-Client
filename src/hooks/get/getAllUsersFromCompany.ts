@@ -5,20 +5,20 @@ import { useAtom } from 'jotai';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { LoadingState } from '../../jotai/companies';
-import {  getUniqueCompany } from '../../config/url';
+import { getAllUserFromCompany } from '../../config/url';
 import { useParams } from 'react-router-dom';
 
-export const useGetUniqueCompanyMutation = (): any => {
+export const GetUsersFromCompanyMutation = (): any => {
 
     const [loading, setLoading] = useAtom(LoadingState);
-    const [company, setCompany] = useState([]);
+    const [users, setUsers] = useState([]);
 
     const params = useParams()
 
-    const getUniqueCompanyMutation = useMutation(
+    const getAllUsersFromCompanyMutation = useMutation(
         async () => {
             setLoading(true);
-            return await backend({ url: `${getUniqueCompany}/${params.id}`, method: 'GET' });
+            return await backend({ url: `${getAllUserFromCompany}/${params.id}`, method: 'GET' });
         },
         {
             onError: (error: any) => {
@@ -27,12 +27,19 @@ export const useGetUniqueCompanyMutation = (): any => {
             },
             onSuccess: (response: any) => {
                 toast.success(response.data.message)
-                setCompany(
-                    response.data.data
-                );
+
+                console.log(response.data.data)
+
+
+                setUsers(response.data.data?.map((value: any) => ({
+                    value: `${value.user.firstName} ${value.user.lastName}`,
+                    label: `${value.user.firstName} ${value.user.lastName}`,
+                    id: value.user.id,
+                })));
                 setLoading(false);
+
             },
         }
     );
-    return { getUniqueCompanyMutation, company, loading };
+    return { getAllUsersFromCompanyMutation, users, loading };
 };

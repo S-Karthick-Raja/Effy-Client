@@ -2,16 +2,16 @@
 import { useMutation } from "@tanstack/react-query";
 import { backend } from "../../utils/axiosInstants";
 import toast from "react-hot-toast";
-import { addCompany } from "../../config/url";
+import { updateCompany } from "../../config/url";
 import { useNavigate } from "react-router-dom";
 
-export const useCreateCompanyMutation = (): any => {
+export const useUpdateCompanyMutation = (): any => {
   const navigate = useNavigate();
-  const createCompanyMutation = useMutation(
+  const updateCompanyMutation = useMutation(
     async (RequestData: any) => {
       return await backend({
-        url: `${addCompany}`,
-        method: "POST",
+        url: `${updateCompany}/${RequestData.id}`,
+        method: "PUT",
         data: RequestData,
       });
     },
@@ -20,10 +20,10 @@ export const useCreateCompanyMutation = (): any => {
         toast.error(errors.response.data.error);
       },
       onSuccess: () => {
-        toast.success("Created company successfully");
+        toast.success("Updated company successfully");
         navigate(0);
       },
     }
   );
-  return { createCompanyMutation };
+  return { updateCompanyMutation };
 };

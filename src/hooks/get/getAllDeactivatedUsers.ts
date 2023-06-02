@@ -5,34 +5,36 @@ import { useAtom } from 'jotai';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { LoadingState } from '../../jotai/companies';
-import {  getUniqueCompany } from '../../config/url';
-import { useParams } from 'react-router-dom';
+import { getAllDeactivatedUsers } from '../../config/url';
 
-export const useGetUniqueCompanyMutation = (): any => {
+export const useGetAllDeactivUsersMutation = (): any => {
 
     const [loading, setLoading] = useAtom(LoadingState);
-    const [company, setCompany] = useState([]);
+    const [users, setusers] = useState([]);
 
-    const params = useParams()
-
-    const getUniqueCompanyMutation = useMutation(
+    const getAllDeactivatedUsersMutation = useMutation(
         async () => {
             setLoading(true);
-            return await backend({ url: `${getUniqueCompany}/${params.id}`, method: 'GET' });
+            return await backend({ url: `${getAllDeactivatedUsers}`, method: 'GET' });
         },
         {
             onError: (error: any) => {
-                toast.error(error.response.data.error.message);
+                if (error.response.data.error === 'No users found') {
+                    toast(error.response.data.error)
+
+                } else {
+                    toast.error(error.response.data.error)
+
+                }
                 setLoading(false);
             },
             onSuccess: (response: any) => {
-                toast.success(response.data.message)
-                setCompany(
+                setusers(
                     response.data.data
                 );
                 setLoading(false);
             },
         }
     );
-    return { getUniqueCompanyMutation, company, loading };
+    return { getAllDeactivatedUsersMutation, users, loading };
 };
