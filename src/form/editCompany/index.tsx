@@ -1,62 +1,132 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import InputLabel from "../../components/input";
 import { useForm, SubmitHandler } from "react-hook-form";
 import PrimaryBtn from "../../components/button";
 import axios from "axios";
-import { useCreateCompanyMutation } from "../../hooks/post/createCompany";
+import { useUpdateCompanyMutation } from "../../hooks/put/updateCompany";
+import AsynCreatableSelectRegBase from "../../components/react-select";
+import { useFetchCompanyMutation } from "../../hooks/get/fetchCompany";
 
 type Inputs = {
-  companyName: string;
+  companyName: any;
   companyAddress: string;
   latitude: string;
   longitude: string;
 };
 
-const EditCompanyForm: React.FC = (): React.ReactElement => {
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
+interface CompanyData {
+  id: string;
+  companyName: string;
+  companyAddress: string;
+  latitude: string;
+  longitude: string;
+  createdAt: string;
+  updatedAt: string;
+  UserInCompany: Array<[]>;
+}
 
-  const { createCompanyMutation } = useCreateCompanyMutation();
+interface CompanyCardProps {
+  companyData: CompanyData;
+}
+
+const EditCompanyForm: React.FC<CompanyCardProps> = ({
+  companyData,
+}): React.ReactElement => {
+  const { updateCompanyMutation } = useUpdateCompanyMutation();
+
+  const { fetchAllCompanyMutation, company } = useFetchCompanyMutation();
+
+  useEffect(() => {
+    fetchAllCompanyMutation.mutate();
+  }, []);
 
   const {
     register,
     handleSubmit,
+    setValue,
+    trigger,
+    getValues,
+    control,
     formState: { errors },
   } = useForm<Inputs>({
     defaultValues: {
-      companyName: "John Doe",
-      companyAddress: "johndoe@example.com",
-      latitude: "23.34324",
-      longitude: "12.574",
+      companyName: `${companyData.companyName}`,
+      companyAddress: `${companyData.companyAddress}`,
+      latitude: `${companyData.latitude}`,
+      longitude: `${companyData.longitude}`,
     },
   });
 
+  const filteredObjects = company?.filter(
+    (obj: any) => obj.label === companyData.companyName
+  );
+
+  console.log(filteredObjects);
+
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const apiKey = "AIzaSyCWsZuRrkZE0EeOjQu-ajyW0utrM-UZ82M";
+
+    const dataSet = {
+      companyAddress: `${data.companyAddress}`
+    };
+
     const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
-      data.companyAddress
+      dataSet.companyAddress
     )}&key=${apiKey}`;
 
     const response = await axios.get(url);
 
-    console.log(response);
-
     const { lat, lng } = response.data.results[0].geometry.location;
 
-    const FinalData = {
-      ...data,
-      latitude: lat.toString(),
-      longitude: lng.toString(),
-    };
+    // console.log(filteredObjects[0]?.value)
+    // console.log(data?.companyName?.value)
+    // let finalCompanyName;
 
-    setLatitude(lat);
-    setLongitude(lng);
+    // if (filteredObjects[0]?.value !== undefined && data?.companyName?.value === undefined) {
+    //   finalCompanyName = filteredObjects[0]?.value;
+    // } else {
+    //   finalCompanyName = data?.companyName;
+    // }
 
-    await console.log("Update:", FinalData);
+    // console.log(finalCompanyName)
 
-    await createCompanyMutation.mutate(FinalData);
+    console.log(data)
+
+    console.log(data.companyName)
+
+    if (data.companyName === companyData.companyName) {
+      const FinalData = {
+        companyName: data.companyName,
+        companyAddress: data.companyAddress,
+        id: companyData?.id,
+        latitude: lat,
+        longitude: lng,
+      };
+  
+      console.log("Success");
+  
+      await updateCompanyMutation.mutate(FinalData);
+    }else{
+      const FinalData = {
+        companyName: data.companyName.value,
+        companyAddress: data.companyAddress,
+        id: companyData?.id,
+        latitude: lat,
+        longitude: lng,
+      };
+  
+      console.log("Error");
+  
+      await updateCompanyMutation.mutate(FinalData);
+    }
+
+
+   
   };
+
+  const [selectCompanyName, setSelecteCompanyName] = useState([]);
 
   return (
     <form
@@ -65,14 +135,30 @@ const EditCompanyForm: React.FC = (): React.ReactElement => {
     >
       {/* Form Fields */}
       <div className="flex flex-col gap-4">
-        <InputLabel
-          placeHolder="Company Address"
-          disabled={false}
-          isMandatory={true}
+        <AsynCreatableSelectRegBase
+          width="100%"
+          setValue={setValue}
+          trigger={trigger}
+          control={control}
+          labelFontSize="sm"
+          labelFontWeight="500"
+          placeHolder={companyData.companyName}
           label="Company Name"
+          listData={company}
+          selected={selectCompanyName}
+          setSelected={setSelecteCompanyName}
           isError={errors.companyName !== undefined}
-          inputType="text"
-          register={register("companyName", { required: true, minLength: 2 })}
+          isErrorIcon={true}
+          isMandatory={true}
+          isInfo={true}
+          isMulti={false}
+          registerName="companyName"
+          getValue={getValues().companyName}
+          register={{
+            ...register("companyName", {
+              required: true,
+            }),
+          }}
         />
         <InputLabel
           placeHolder="Company Address"

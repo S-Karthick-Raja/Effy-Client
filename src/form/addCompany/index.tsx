@@ -1,51 +1,77 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import InputLabel from "../../components/input";
 import { useForm, SubmitHandler } from "react-hook-form";
 import PrimaryBtn from "../../components/button";
 import axios from "axios";
 import { useCreateCompanyMutation } from "../../hooks/post/createCompany";
+import AsynCreatableSelectRegBase from "../../components/react-select";
+import { useFetchCompanyMutation } from "../../hooks/get/fetchCompany";
 
 type Inputs = {
-  companyName: string;
+  companyName: any;
   companyAddress: string;
 };
 
 const AddCompanyForm: React.FC = (): React.ReactElement => {
+
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
 
-  const { createCompanyMutation} = useCreateCompanyMutation();
+  const { createCompanyMutation } = useCreateCompanyMutation();
+
+  const { fetchAllCompanyMutation, company } = useFetchCompanyMutation();
+
+  useEffect(() => {
+    fetchAllCompanyMutation.mutate();
+  }, []);
 
   const {
     register,
     handleSubmit,
+    setValue,
+    trigger,
+    getValues,
+    control,
     formState: { errors },
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const apiKey = "AIzaSyCWsZuRrkZE0EeOjQu-ajyW0utrM-UZ82M";
+
+    const dataSet = {
+      companyAddress: `${data.companyAddress}`
+    };
+
     const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
-      data.companyAddress
+      dataSet.companyAddress
     )}&key=${apiKey}`;
 
     const response = await axios.get(url);
 
-    console.log(response);
-
     const { lat, lng } = response.data.results[0].geometry.location;
 
+    console.log(response.data.results);
+
+    console.log(lat,lng)
+
     const FinalData = {
-      ...data,
-      latitude: lat.toString(),
-      longitude: lng.toString(),
+      companyName: data.companyName?.label,
+      companyAddress: data.companyAddress,
+      latitude: lat,
+      longitude: lng,
     };
 
     setLatitude(lat);
     setLongitude(lng);
 
+    console.log(FinalData)
+
     await createCompanyMutation.mutate(FinalData);
   };
+
+  const [selectCompanyName, setSelecteCompanyName] = useState([]);
 
   return (
     <form
@@ -54,15 +80,33 @@ const AddCompanyForm: React.FC = (): React.ReactElement => {
     >
       {/* Form Fields */}
       <div className="flex flex-col gap-4">
-        <InputLabel
-          placeHolder="Company Address"
-          disabled={false}
-          isMandatory={true}
+        <AsynCreatableSelectRegBase
+          width="100%"
+          setValue={setValue}
+          trigger={trigger}
+          control={control}
+          labelFontSize="sm"
+          labelFontWeight="medium"
+          placeHolder="ex. effy"
           label="Company Name"
-          isError={errors.companyName !== undefined }
-          inputType="text"
-          register={register("companyName", { required: true, minLength: 2 })}
+          listData={company}
+          selected={selectCompanyName}
+          setSelected={setSelecteCompanyName}
+          isError={errors.companyName !== undefined}
+          isErrorIcon={true}
+          isMandatory={true}
+          isInfo={true}
+          isMulti={false}
+          registerName="companyName"
+          getValue={getValues().companyName}
+
+          register={{
+            ...register("companyName", {
+              required: true,
+            }),
+          }}
         />
+
         <InputLabel
           placeHolder="Company Address"
           disabled={false}
