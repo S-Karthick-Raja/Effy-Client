@@ -28,9 +28,6 @@ export const GetUsersFromCompanyMutation = (): any => {
             onSuccess: (response: any) => {
                 toast.success(response.data.message)
 
-                console.log(response.data.data)
-
-
                 setUsers(response.data.data?.map((value: any) => ({
                     value: `${value.user.firstName} ${value.user.lastName}`,
                     label: `${value.user.firstName} ${value.user.lastName}`,

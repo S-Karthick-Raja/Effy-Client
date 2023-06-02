@@ -24,8 +24,6 @@ const RemoveUserFromCompanyForm: React.FC<AddUserFormProps> = (): React.ReactEle
     getAllUsersFromCompanyMutation.mutate();
   }, []);
 
-  console.log("User",users)
-
   const {
     register,
     handleSubmit,
@@ -41,7 +39,6 @@ const RemoveUserFromCompanyForm: React.FC<AddUserFormProps> = (): React.ReactEle
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
 
-    console.log("Dat",data)
     const FinalData = {
       userId: data?.userId.id,
     };

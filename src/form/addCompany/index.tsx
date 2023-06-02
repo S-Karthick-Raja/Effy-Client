@@ -52,10 +52,6 @@ const AddCompanyForm: React.FC = (): React.ReactElement => {
 
     const { lat, lng } = response.data.results[0].geometry.location;
 
-    console.log(response.data.results);
-
-    console.log(lat,lng)
-
     const FinalData = {
       companyName: data.companyName?.label,
       companyAddress: data.companyAddress,
@@ -66,7 +62,6 @@ const AddCompanyForm: React.FC = (): React.ReactElement => {
     setLatitude(lat);
     setLongitude(lng);
 
-    console.log(FinalData)
 
     await createCompanyMutation.mutate(FinalData);
   };

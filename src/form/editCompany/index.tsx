@@ -59,12 +59,6 @@ const EditCompanyForm: React.FC<CompanyCardProps> = ({
     },
   });
 
-  const filteredObjects = company?.filter(
-    (obj: any) => obj.label === companyData.companyName
-  );
-
-  console.log(filteredObjects);
-
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const apiKey = "AIzaSyCWsZuRrkZE0EeOjQu-ajyW0utrM-UZ82M";
 
@@ -80,22 +74,6 @@ const EditCompanyForm: React.FC<CompanyCardProps> = ({
 
     const { lat, lng } = response.data.results[0].geometry.location;
 
-    // console.log(filteredObjects[0]?.value)
-    // console.log(data?.companyName?.value)
-    // let finalCompanyName;
-
-    // if (filteredObjects[0]?.value !== undefined && data?.companyName?.value === undefined) {
-    //   finalCompanyName = filteredObjects[0]?.value;
-    // } else {
-    //   finalCompanyName = data?.companyName;
-    // }
-
-    // console.log(finalCompanyName)
-
-    console.log(data)
-
-    console.log(data.companyName)
-
     if (data.companyName === companyData.companyName) {
       const FinalData = {
         companyName: data.companyName,
@@ -104,8 +82,6 @@ const EditCompanyForm: React.FC<CompanyCardProps> = ({
         latitude: lat,
         longitude: lng,
       };
-  
-      console.log("Success");
   
       await updateCompanyMutation.mutate(FinalData);
     }else{
@@ -116,8 +92,6 @@ const EditCompanyForm: React.FC<CompanyCardProps> = ({
         latitude: lat,
         longitude: lng,
       };
-  
-      console.log("Error");
   
       await updateCompanyMutation.mutate(FinalData);
     }

@@ -23,7 +23,7 @@ export const useGetAllDeactivUsersMutation = (): any => {
                     toast(error.response.data.error)
 
                 } else {
-                    toast.error(error.response.data.error)
+                    toast(error.response.data.error)
 
                 }
                 setLoading(false);

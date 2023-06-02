@@ -32,8 +32,6 @@ const EditUserForm: React.FC<EditUserProps> = ({userData}): React.ReactElement =
     fetchAllDesignationMutation.mutate();
   }, []);
 
-  console.log(userData)
-
   const {
     register,
     handleSubmit,

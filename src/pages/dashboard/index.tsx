@@ -20,6 +20,8 @@ const DashboardPage: React.FC = (): React.ReactElement => {
     getAllDeactivatedUsersMutation.mutate();
   }, []);
 
+  console.log(import.meta.env.MAP_API_URL)
+
   return (
     <div className="w-full p-4 rounded-sm bg-white min-h-screen ">
       <div className="flex flex-col gap-6">
@@ -48,7 +50,12 @@ const DashboardPage: React.FC = (): React.ReactElement => {
           <h1 className="text-4xl font-extrabold uppercase text-secondary text-center">
             <Typewriter
               options={{
-                strings: ["Manage Company", "Manage Users", "Assign users to company", "Migrate users to other company"],
+                strings: [
+                  "Manage Company",
+                  "Manage Users",
+                  "Assign users to company",
+                  "Migrate users to other company",
+                ],
                 autoStart: true,
                 loop: true,
               }}
