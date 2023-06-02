@@ -21,10 +21,9 @@ interface CompanyCardProps {
   companyData: CompanyData;
 }
 
-const Modal: React.FC<CompanyCardProps> = ({
+const UserModal: React.FC<CompanyCardProps> = ({
   companyData,
 }): React.ReactElement => {
-  console.log("Modal", companyData);
 
   const [deletePopup, setDeletePopup] = useAtom(InitialDelPopupCompany);
   const [editPopup, setEditPopup] = useAtom(InitialEditPopupCompany);
@@ -147,4 +146,4 @@ const Modal: React.FC<CompanyCardProps> = ({
   );
 };
 
-export default Modal;
+export default UserModal;

@@ -30,7 +30,6 @@ const PrimaryBtn: React.FC<PrimaryCTABtnProps> = ({
   handleClick,
 }): React.ReactElement => {
 
-  console.log(btnColour)
   return (
     <button
       type={btnType}

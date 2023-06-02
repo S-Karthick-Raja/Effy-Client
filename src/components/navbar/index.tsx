@@ -1,17 +1,24 @@
-import React, { useState } from "react";
+import React from "react";
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Effy from "../../assets/icons/Effy.png";
 import { Link, useLocation } from "react-router-dom";
 import PopupVarient1 from "../popup";
 import AddCompanyForm from "../../form/addCompany";
+import {
+  InitialAddCompanyPopup,
+  InitialAddUserPopup,
+} from "../../jotai/global";
+import { useAtom } from "jotai";
+import AddUserForm from "../../form/addUser";
 
 const Navbar: React.FC = (): React.ReactElement => {
   const location = useLocation();
 
   const PageLocation = location.pathname.split("/")[1];
 
-  const [addCompany, setAddCompany] = useState(false);
+  const [addCompany, setAddCompany] = useAtom(InitialAddCompanyPopup);
+  const [addUser, setAddUser] = useAtom(InitialAddUserPopup);
 
   return (
     <Disclosure as="nav" className="bg-white shadow">
@@ -38,9 +45,9 @@ const Navbar: React.FC = (): React.ReactElement => {
                 </div>
                 <div className="hidden md:ml-6 md:flex md:space-x-8">
                   <Link
-                    to="/dashboard"
+                    to="/"
                     className={`inline-flex items-center border-b-2 ${
-                      PageLocation === "dashboard"
+                      PageLocation === ""
                         ? "border-primary text-fontDark"
                         : "border-transparent text-gray-500"
                     } hover:border-gray-300 px-1 pt-1 text-sm font-medium`}
@@ -104,6 +111,7 @@ const Navbar: React.FC = (): React.ReactElement => {
                   </button>
                   <button
                     type="button"
+                    onClick={() => setAddUser(true)}
                     className="relative inline-flex items-center gap-x-1.5 rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-secondary active:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
                     <svg
@@ -160,12 +168,20 @@ const Navbar: React.FC = (): React.ReactElement => {
           <PopupVarient1
             open={addCompany}
             setOpen={setAddCompany}
-            children={
-            <AddCompanyForm />
-          }
+            children={<AddCompanyForm />}
             handleCloseBlur={() => setAddCompany(false)}
             handleCloseButton={() => setAddCompany(false)}
             header="Add Company"
+            topAlign={false}
+          />
+
+          <PopupVarient1
+            open={addUser}
+            setOpen={setAddUser}
+            children={<AddUserForm />}
+            handleCloseBlur={() => setAddUser(false)}
+            handleCloseButton={() => setAddUser(false)}
+            header="Add User"
             topAlign={false}
           />
         </>
